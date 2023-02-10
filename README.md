@@ -137,7 +137,7 @@ Feature: Adding documents to the archive
     Given I am logged in as "Riley Smith"          # features/step_definitions/adding_documents.rb:5
     When I go to the "add document" page           # features/step_definitions/adding_documents.rb:9
 
-... 
+...
 
 3 scenarios (3 pending)
 23 steps (20 skipped, 3 pending)
@@ -145,3 +145,5 @@ Feature: Adding documents to the archive
 ```
 
 where you can see the steps are still pending, but the definitions are found.
+
+Add more features and scenarios as needed.
