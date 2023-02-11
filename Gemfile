@@ -71,4 +71,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "cucumber-rails", "~> 2.6"
+  gem "database_cleaner", "~> 2.0"
 end
