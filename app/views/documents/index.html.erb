@@ -2,13 +2,47 @@
 
 <h1>Documents</h1>
 
+<div id="filters">
+  <div id="filter-by-tag">
+    <h2>Filter by tag</h2>
+    <ul>
+      <li>
+        <%= link_to "All tags", url_for(tag: nil, page: nil) %>
+      <li>
+      <% @tags.each do |tag| %>
+        <li>
+          <%= link_to tag.name, url_for(tag: tag.name, page: nil) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div id="filter-by-location">
+    <h2>Filter by location</h2>
+    <ul>
+      <li>
+        <%= link_to "All locations", url_for(location: nil, page: nil) %>
+      <li>
+      <% @locations.each do |location| %>
+        <li>
+          <%= link_to location.name, url_for(location: location.id, page: nil) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
 <div id="documents">
-  <% @documents.each do |document| %>
+  <% @page.records.each do |document| %>
     <%= render document %>
     <p>
       <%= link_to "Show this document", document %>
     </p>
   <% end %>
 </div>
+
+<%= link_to_if @page.previous_page, "Previous page", documents_path(page: @page.previous_page) %>
+<%= link_to_if @page.next_page, "Next page", documents_path(page: @page.next_page) %>
+
 
 <%= link_to "New document", new_document_path %>

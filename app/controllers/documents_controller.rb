@@ -3,7 +3,16 @@ class DocumentsController < ApplicationController
 
   # GET /documents or /documents.json
   def index
-    @documents = Document.all
+    pagination = { page: params[:page], per_page: params[:per_page] }
+                 .compact
+                 .transform_values(&:to_i)
+
+    @page = Queries::DocumentQuery
+            .new(params.permit(:tag, :location))
+            .fetch(**pagination)
+
+    @tags = Tag.all
+    @locations = Location.all
   end
 
   # GET /documents/1 or /documents/1.json
@@ -41,7 +50,7 @@ class DocumentsController < ApplicationController
   def destroy
     @document.destroy
 
-      redirect_to documents_url, notice: 'Document was successfully destroyed.'
+    redirect_to documents_url, notice: 'Document was successfully destroyed.'
   end
 
   private

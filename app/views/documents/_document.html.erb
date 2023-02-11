@@ -1,4 +1,4 @@
-<div id="<%= dom_id document %>">
+<div id="<%= dom_id document %>" class="document">
   <p>
     <strong>Title:</strong>
     <%= document.title %>
@@ -11,7 +11,12 @@
 
   <p>
     <strong>Location:</strong>
-    <%= document.location_id %>
+    <%= document.location.name %>
+  </p>
+
+  <p>
+    <strong>Tags:</strong>
+    <%= document.tags.map(&:name).join(', ') %>
   </p>
 
   <p>

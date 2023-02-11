@@ -316,3 +316,43 @@ We are not going to implement authentication, which is a complex topic and it sh
 be handled with extreme care, possibly having a dedicated subsystem for it. We will
 assume that the current user is injected in our `Current` class by a middleware,
 relying on some trusted data (like a session cookie or a JWT token).
+
+## The "Browsing documents" feature
+
+We now concentrate on browsing documents. The features we need to implement are:
+
+- A list of documents, with pagination
+- Filtered by tags
+- Filtered by location
+
+We proceed as before, step by step, adding only the needed code for each step to
+succeed.
+
+One important thing we have to take care is that we are going to find text in the
+page, so we need unique names for the browsed documents. We defined the scenario
+as
+
+```gherkin
+  Background:
+    Given there are the following documents in the archive
+      | Title | Location | Tags       |
+      | doc1  | Basement | tag1       |
+      | doc2  | Basement | tag2, tag1 |
+      | doc3  | Basement | tag3       |
+      | doc4  | Basement | tag1       |
+      | doc5  | Basement | tag2, tag1 |
+      | doc6  | Basement | tag3       |
+      | doc7  | Attic    | tag1       |
+      | doc8  | Attic    | tag2, tag1 |
+      | doc9  | Attic    | tag3       |
+      | doc10 | Attic    | tag1       |
+      | doc11 | Attic    | tag2, tag1 |
+```
+
+but we are not able to use `doc1` to look for the first document, as the text matches
+also the titles `doc10` and `doc11`. So for the sake of testing, we will add a zero
+padding to the document titles, so we can use `doc01` to find the first document.
+
+The rest of the implementation is trivial, we can extract a `DocumentQuery` model
+and a `Page` model to handle the query result, so we can reduce the controller
+complexity.
