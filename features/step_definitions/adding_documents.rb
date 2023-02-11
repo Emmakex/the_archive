@@ -1,5 +1,5 @@
-Given('there is a user named {string}') do |_string|
-  pending # Write code here that turns the phrase above into concrete actions
+Given('there is a user named {string}') do |string|
+  User.create!(name: string)
 end
 
 Given('I am logged in as {string}') do |_string|
