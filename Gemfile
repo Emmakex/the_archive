@@ -72,4 +72,5 @@ group :test do
   gem "webdrivers"
   gem "cucumber-rails", "~> 2.6"
   gem "database_cleaner", "~> 2.0"
+  gem "rspec", "~> 3.12"
 end

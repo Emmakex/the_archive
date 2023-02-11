@@ -263,3 +263,56 @@ Let's implement the remaining steps for this scenario with the same cycle:
 - implement the missing code
 - run the tests again (the step should now pass)
 - rinse and repeat
+
+We can use a lot of shortcuts to speed up the process. For example we can use
+rails model and scaffold generators to create the models and controllers we need:
+
+```bash
+rails g scaffold Document title:string description:text location:references date:date identifier:string
+rails g model Location name:string
+rails g model Tag name:string
+rails g migration CreateDocumentsTags document:references tag:references
+```
+
+We will also use ActiveStorage to manage attachments, so we need to prepare our
+database for it:
+
+```bash
+bin/rails active_storage:install
+```
+
+And finally we can run the migrations:
+
+```bash
+bin/rails db:migrate RAILS_ENV=test
+```
+
+We will also have to update routes and controllers, so all the system will start
+to work.
+
+[Some hours pass...]
+
+Finally, we can successfully run the "Adding documents to the archive" feature.
+We have added a number of new code files, to help decouple the document form to
+the model:
+
+- A `Current` class that will hold request information. We have to take care of
+  not abusing thread-locals, but this class will be useful when we need to
+  develop the authenitcation system. The `Current` class acts as a request-scoped
+  depedency container, and it is also easy to mock in tests.
+- A "form model", to handle creation data. It will get the plain data from the form
+  and make sure all the data is handled correctly, creating locations and tags on
+  the fly, and handling the identifier creation.
+  We use some nice features of ActiveModel to make this object play nice with
+  inputs and url helpers, and implement the `save` method to persist the data
+  inside of a database transaction.
+- The controller, which was generated with the scaffold command, has been modified
+  to use the form model. We have also removed the JSON handlers, as we are not going
+  to expose an API.
+- The HTML form has been adapted to follow the DocumentCreationForm, instead of the
+  persisted model.
+
+We are not going to implement authentication, which is a complex topic and it should
+be handled with extreme care, possibly having a dedicated subsystem for it. We will
+assume that the current user is injected in our `Current` class by a middleware,
+relying on some trusted data (like a session cookie or a JWT token).

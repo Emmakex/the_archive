@@ -1,2 +1,2 @@
-default: --publish-quiet
+default: --publish-quiet --no-source --strict --fail-fast
 text: --publish-quiet --no-color --no-multiline --no-source --strict --fail-fast
